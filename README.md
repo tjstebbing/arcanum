@@ -91,7 +91,7 @@ not the username or email address (UUIDs are a great idea).
 
 ```javascript 
 { "username" : "pomke", 
-  "arc_key" : 6ba7b810-9dad-11d1-80b4-00c04fd430c8",
+  "arc_key" : "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
   ... other personal data
 }
 ```
