@@ -1,0 +1,12 @@
+{
+    "port" : 7000,
+    "backend_module" : "./riak_backend",
+    "backoff" : { 
+        "enabled" : true,
+        "min_attempt_threshold" : 3,
+        "max_time_seconds" : 86400 },
+    "hashes" : { 
+        "HMAC" : { "module" : "./HMAC" }, 
+        "SHA256" : { "module" : "./SHA256" }
+    }
+}
