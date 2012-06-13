@@ -124,7 +124,7 @@ Returns json:
 * "[true]" 
 
 ```sh
-curl --d "" http://arcanum.local/6ba7b810-9dad-11d1-80b4-00c04fd430c8/EFemjntKiIj3apL9nw==$w80kGMRmG47XNMKgrr6igupFrCYOQs6Nto9bsA==
+curl --d "" http://arcanum.local/6ba7b810-9dad-11d1-80b4-00c04fd430c8/EFemjntKiIj3apL9nw%3d%3d%24w80kGMRmG47XNMKgrr6igupFrCYOQs6Nto9bsA%3d%3d
 ```
 
 *POST /\<key\>/\<old password\>/\<new password\>* 
@@ -136,7 +136,7 @@ Returns json:
 * "[true]" if the password was set.
 * "[false, 'NOUSER']" if no user matches the key.
 * "[false, 'MISMATCH']" if old password does not match.
-* "[false, 'BACKOFF', <seconds>]" if old password does not match and a backoff threshold applies.
+* "[false, 'BACKOFF', \<seconds\>]" if old password does not match and a backoff threshold applies.
 
 ```sh
 curl --d "" http://arcanum.local/6ba7b810-9dad-11d1-80b4-00c04fd430c8/EFemjntKiIj3apL9nw%3d%3d%24w80kGMRmG47XNMKgrr6igupFrCYOQs6Nto9bsA%3d%3d/jW4t9FJn4FyYYpMtbw%3d%3d%2frvZyV%2bgXg6ZBU2bUtbN9K18e5nPjg%3d%3d
@@ -153,7 +153,7 @@ Returns json:
 
 * "[true]" if the password was set.
 * "[false, 'MISMATCH']" if password does not match.
-* "[false, 'BACKOFF', <seconds>]" if password does not match and a backoff threshold applies.
+* "[false, 'BACKOFF', \<seconds\>]" if password does not match and a backoff threshold applies.
 
 ```sh
 curl http://arcanum.local/6ba7b810-9dad-11d1-80b4-00c04fd430c8/EFemjntKiIj3apL9nw%3d%3d%24w80kGMRmG47XNMKgrr6igupFrCYOQs6Nto9bsA%3d%3d
