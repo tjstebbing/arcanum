@@ -114,7 +114,7 @@ Setting passwords is as simple as posting to a password setting URL. These urls
 all function in basically two forms, with or without the validation of providing
 an old password:
 
-*POST /<key>/<new password>* 
+*POST /\<key\>/\<new password\>* 
 
 Sets a new password for the given key, without any validation checking or 
 hashing, what you pass is what gets stored.
@@ -127,7 +127,7 @@ Returns json:
 curl --d "" http://arcanum.local/6ba7b810-9dad-11d1-80b4-00c04fd430c8/EFemjntKiIj3apL9nw==$w80kGMRmG47XNMKgrr6igupFrCYOQs6Nto9bsA==
 ```
 
-*POST /<key>/<old password>/<new password>* 
+*POST /\<key\>/\<old password\>/\<new password\>* 
 
 Sets a new password, however validates that the old password matches. 
 
@@ -145,7 +145,7 @@ curl --d "" http://arcanum.local/6ba7b810-9dad-11d1-80b4-00c04fd430c8/EFemjntKiI
 Checking passwords:
 -------------------
 
-*GET /<key>/<password>* 
+*GET /\<key\>/\<password\>* 
 
 Check if the password matches the key.
 
@@ -166,7 +166,7 @@ Arcanum can handle hashing for you, simply prepend the hash function to the path
 of any URL and provide plaina-text values for passwords in the URL. Each hash 
 function uses a salt which is configurable in the Arcanum config file. 
 
-*GET /SHA256/<key>/<password>* 
+*GET /SHA256/\<key\>/\<password\>* 
 
 This would test if the password matches, after applying the SHA256 hash function,
 this assumes the password was first stored using the same hash method.
@@ -175,7 +175,7 @@ this assumes the password was first stored using the same hash method.
 curl http://arcanum.local/6ba7b810-9dad-11d1-80b4-00c04fd430c8/correct+horse+battery+staple
 ```
 
-*POST /HMAC/<key>/<old password>/<new password>* 
+*POST /HMAC/\<key\>/\<old password\>/\<new password\>* 
 
 This would update the password if old password matches, using the HMAC hash
 function, this assumes the password was first stored using the same hash method.
