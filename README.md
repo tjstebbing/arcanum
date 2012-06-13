@@ -82,7 +82,7 @@ not the username or email address (UUIDs are a great idea).
 --------------+--------------------------+---------------------------
  id           | integer                  | not null default nex..
  username     | character varying(30)    | not null
- arc_key      | character varying(128)   | not null
+ arc_key      | character varying(32)    | not null
  ... other personal data
 
 ```
