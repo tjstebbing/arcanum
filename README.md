@@ -106,4 +106,88 @@ API
 Arcanum is accessible via HTTP/REST and understands JSON. Communication
 is relatively simple and a variety of actions are available:
 
+
+Setting passwords:
+------------------
+
+Setting passwords is as simple as posting to a password setting URL. These urls
+all function in basically two forms, with or without the validation of providing
+an old password:
+
+*POST /<key>/<new password>* 
+
+Sets a new password for the given key, without any validation checking or 
+hashing, what you pass is what gets stored.
+
+Returns json: 
+
+"[true]" 
+
+```sh
+curl --d "" http://arcanum.local/6ba7b810-9dad-11d1-80b4-00c04fd430c8/EFemjntKiIj3apL9nw==$w80kGMRmG47XNMKgrr6igupFrCYOQs6Nto9bsA==
+```
+
+*POST /<key>/<old password>/<new password>* 
+
+Sets a new password, however validates that the old password matches. 
+
+Returns json:
+
+"[true]" if the password was set.
+"[false, 'NOUSER']" if no user matches the key.
+"[false, 'MISMATCH']" if old password does not match.
+"[false, 'BACKOFF', <seconds>]" if old password does not match and a backoff threshold applies.
+
+```sh
+curl --d "" http://arcanum.local/6ba7b810-9dad-11d1-80b4-00c04fd430c8/EFemjntKiIj3apL9nw%3d%3d%24w80kGMRmG47XNMKgrr6igupFrCYOQs6Nto9bsA%3d%3d/jW4t9FJn4FyYYpMtbw%3d%3d%2frvZyV%2bgXg6ZBU2bUtbN9K18e5nPjg%3d%3d
+```
+
+Checking passwords:
+-------------------
+
+*GET /<key>/<password>* 
+
+Check if the password matches the key.
+
+Returns json:
+
+"[true]" if the password was set.
+"[false, 'MISMATCH']" if password does not match.
+"[false, 'BACKOFF', <seconds>]" if password does not match and a backoff threshold applies.
+
+```sh
+curl http://arcanum.local/6ba7b810-9dad-11d1-80b4-00c04fd430c8/EFemjntKiIj3apL9nw%3d%3d%24w80kGMRmG47XNMKgrr6igupFrCYOQs6Nto9bsA%3d%3d
+```
+
+Hashing:
+--------
+
+Arcanum can handle hashing for you, simply prepend the hash function to the path
+of any URL and provide plaina-text values for passwords in the URL. Each hash 
+function uses a salt which is configurable in the Arcanum config file. 
+
+*GET /SHA256/<key>/<password>* 
+
+This would test if the password matches, after applying the SHA256 hash function,
+this assumes the password was first stored using the same hash method.
+
+```sh
+curl http://arcanum.local/6ba7b810-9dad-11d1-80b4-00c04fd430c8/correct+horse+battery+staple
+```
+
+*POST /HMAC/<key>/<old password>/<new password>* 
+
+This would update the password if old password matches, using the HMAC hash
+function, this assumes the password was first stored using the same hash method.
+
+```sh
+curl -d "" http://arcanum.local/6ba7b810-9dad-11d1-80b4-00c04fd430c8/butterfly27/correct+horse+battery+staple
+```
+
+
+Configuration:
+==============
+
 TODO
+
+
