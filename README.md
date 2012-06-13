@@ -201,15 +201,15 @@ Configuration:
 
 Arcanum has a JSON config file, config.json with the following params:
 
-* *port* The port to listen on.
-* *backend > module * Is a node.js module path, by default we use riak.
-* *backend > \** All other arguments are passed to this module.
-* *backoff > enabled* Should Arcanum manage expomential backoff, that is refuse repeat attempts. 
-* *backoff > min_attempt_threshold* how many attempts to allow before applying backoff. 
-* *backoff > max_time_seconds* max time backoff will block a user in seconds. 
-* *hashes > scheme_id * provides a scheme for hashing passwords.
-* *hashes > scheme_id  > module * a node.js module path which provides a hash function.
-* *hashes > scheme_id  > \** all other arguments are passed to this module.
+* _port_ The port to listen on.
+* _backend > module_ Is a node.js module path, by default we use riak.
+* _backend > \*_ All other arguments are passed to this module.
+* _backoff > enabled_ Should Arcanum manage expomential backoff, that is refuse repeat attempts. 
+* _backoff > min_attempt_threshold_ how many attempts to allow before applying backoff. 
+* _backoff > max_time_seconds_ max time backoff will block a user in seconds. 
+* _hashes > scheme_id_ provides a scheme for hashing passwords.
+* _hashes > scheme_id  > module_ a node.js module path which provides a hash function.
+* _hashes > scheme_id  > \*_ all other arguments are passed to this module.
 
 
 
