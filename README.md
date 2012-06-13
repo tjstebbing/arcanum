@@ -110,24 +110,26 @@ is relatively simple and a variety of actions are available:
 Setting passwords:
 ------------------
 
-Setting passwords is as simple as posting to a password setting URL. These urls
-all function in basically two forms, with or without the validation of providing
-an old password:
+Setting passwords is as simple as posting some JSON to a URL.
 
-*POST /\<key\>/\<new password\>* 
+*POST /\<key\>* 
 
+```javascript
+//POST to http://arcanum.local/6ba7b810-9dad-11d1-80b4-00c04fd430c8
+{ "newpass" :  "w80kGMRmG47XNMKgrr6igupFrCYOQs6Nto9bsA==" }
+```
 Sets a new password for the given key, without any validation checking or 
 hashing, what you pass is what gets stored.
 
 Returns json: 
-
 * "[true]" 
 
-```sh
-curl --d "" http://arcanum.local/6ba7b810-9dad-11d1-80b4-00c04fd430c8/EFemjntKiIj3apL9nw%3d%3d%24w80kGMRmG47XNMKgrr6igupFrCYOQs6Nto9bsA%3d%3d
-```
 
-*POST /\<key\>/\<old password\>/\<new password\>* 
+```javascript
+//POST to http://arcanum.local/6ba7b810-9dad-11d1-80b4-00c04fd430c8
+{ "newpass" :  "w80kGMRmG47XNMKgrr6igupFrCYOQs6Nto9bsA==",
+  "oldpass" : "/rvZyV+gXg6ZBU2bUtbN9K18e5nPjg==" }
+```
 
 Sets a new password, however validates that the old password matches. 
 
@@ -138,14 +140,16 @@ Returns json:
 * "[false, 'MISMATCH']" if old password does not match.
 * "[false, 'BACKOFF', \<seconds\>]" if a backoff threshold applies.
 
-```sh
-curl --d "" http://arcanum.local/6ba7b810-9dad-11d1-80b4-00c04fd430c8/EFemjntKiIj3apL9nw%3d%3d%24w80kGMRmG47XNMKgrr6igupFrCYOQs6Nto9bsA%3d%3d/jW4t9FJn4FyYYpMtbw%3d%3d%2frvZyV%2bgXg6ZBU2bUtbN9K18e5nPjg%3d%3d
-```
 
 Checking passwords:
 -------------------
 
-*GET /\<key\>/\<password\>* 
+*POST /\<key\>* 
+
+```javascript
+//POST to http://arcanum.local/6ba7b810-9dad-11d1-80b4-00c04fd430c8
+{ "check" :  "w80kGMRmG47XNMKgrr6igupFrCYOQs6Nto9bsA==" }
+```
 
 Check if the password matches the key.
 
@@ -155,39 +159,57 @@ Returns json:
 * "[false, 'MISMATCH']" if password does not match.
 * "[false, 'BACKOFF', \<seconds\>]" if a backoff threshold applies.
 
-```sh
-curl http://arcanum.local/6ba7b810-9dad-11d1-80b4-00c04fd430c8/EFemjntKiIj3apL9nw%3d%3d%24w80kGMRmG47XNMKgrr6igupFrCYOQs6Nto9bsA%3d%3d
-```
 
 Hashing:
 --------
 
-Arcanum can handle hashing for you, simply prepend the hash function to the path
-of any URL and provide plaina-text values for passwords in the URL. Each hash 
-function uses a salt which is configurable in the Arcanum config file. 
+Arcanum can handle hashing for you, simply prepend the hash scheme 
+(see config.json) to the path of any URL and provide plaina-text values 
+for passwords. New hash schemes are configurable in the config file, the 
+standard scheme '/std/' is pretty good.
 
-*GET /SHA256/\<key\>/\<password\>* 
+*GET /std/\<key\>* 
 
-This would test if the password matches, after applying the SHA256 hash function,
-this assumes the password was first stored using the same hash method.
-
-```sh
-curl http://arcanum.local/6ba7b810-9dad-11d1-80b4-00c04fd430c8/correct+horse+battery+staple
+```javascript
+//POST to http://arcanum.local/std/6ba7b810-9dad-11d1-80b4-00c04fd430c8
+{ "check" :  "correct horse battery staple" }
 ```
 
-*POST /HMAC/\<key\>/\<old password\>/\<new password\>* 
-
-This would update the password if old password matches, using the HMAC hash
+This would test if the password matches, after applying the std HMAC/SHA256 hash 
 function, this assumes the password was first stored using the same hash method.
 
-```sh
-curl -d "" http://arcanum.local/6ba7b810-9dad-11d1-80b4-00c04fd430c8/butterfly27/correct+horse+battery+staple
+
+*POST /alt1/\<key\>* 
+
+```javascript
+//POST to http://arcanum.local/alt1/6ba7b810-9dad-11d1-80b4-00c04fd430c8
+{ "newpass" :  "correct horse battery staple",
+  "oldpass" : "butterflies27" }
 ```
+
+This would update the password if old password matches, using the alt1 hash
+function, this assumes the password was first stored using the same hash method.
+
+
+Hash schemes should be given non standard names, rather than 'sha256' to avoid
+revealing too much information should the requests be logged somewhere in your 
+infrastructure. 
 
 
 Configuration:
 ==============
 
-TODO
+Arcanum has a JSON config file, config.json with the following params:
+
+* *port* The port to listen on.
+* *backend > module * Is a node.js module path, by default we use riak.
+* *backend > \** All other arguments are passed to this module.
+* *backoff > enabled* Should Arcanum manage expomential backoff, that is refuse repeat attempts. 
+* *backoff > min_attempt_threshold* how many attempts to allow before applying backoff. 
+* *backoff > max_time_seconds* max time backoff will block a user in seconds. 
+* *hashes > scheme_id * provides a scheme for hashing passwords.
+* *hashes > scheme_id  > module * a node.js module path which provides a hash function.
+* *hashes > scheme_id  > \** all other arguments are passed to this module.
+
 
 

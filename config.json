@@ -6,7 +6,7 @@
         "min_attempt_threshold" : 3,
         "max_time_seconds" : 86400 },
     "hashes" : { 
-        "HMAC" : { "module" : "./HMAC" }, 
-        "SHA256" : { "module" : "./SHA256" }
+        "std" : { "module" : "./HMAC", "hash" : "SHA256" }, 
+        "alt1" : { "module" : "./SHA256" }
     }
 }
