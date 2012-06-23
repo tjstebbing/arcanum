@@ -99,6 +99,7 @@ not the username or email address (UUIDs are a great idea).
 Your application can then communicate directly with Arcanum via HTTP
 using this key to store and verify passwords for user-requests. 
 
+![Chromie](https://github.com/pomke/arcanum/raw/master/diagram.png)
 
 API
 ===
